@@ -17,7 +17,7 @@ webpush.setVapidDetails(
   vapidKeys.privateKey
 );
 
-const TTL = 60 * 60 * 3;
+const TTL = 60 * 60 * 12;
 
 const redisClient = redis.createClient();
 const redisSet = promisify(redisClient.set).bind(redisClient);
