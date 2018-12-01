@@ -5,7 +5,7 @@ const express = require('express');
 
 const app = express();
 app.use(express.static('.'));
-const httpServer = app.listen(80);
+const httpServer = app.listen(8080);
 const socketServer = new SocketServer({server: httpServer});
 
 const socketPlayerMap = new Map();

@@ -53,7 +53,7 @@
         const packet = JSON.parse(msg.data);
         if (packet.type === 'players') {
           const list = document.querySelector('ul');
-          list.innerHTML = packet.players.map(player => `<li>${player}</li>`).join('');
+          list.innerHTML = packet.players.map(player => `<li>${escapeHTML(player)}</li>`).join('');
         } else if (packet.type === 'vapid') {
           vapidPublicKey = packet.key;
         }
@@ -152,5 +152,14 @@
         }
         return outputArray;
       }
+
+      function escapeHTML(unsafe) {
+        return unsafe
+             .replace(/&/g, "&amp;")
+             .replace(/</g, "&lt;")
+             .replace(/>/g, "&gt;")
+             .replace(/"/g, "&quot;")
+             .replace(/'/g, "&#039;");
+       }
   </script>
 </body>
