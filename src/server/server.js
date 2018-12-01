@@ -29,7 +29,7 @@ socketServer.on('connection', (socket) => {
   const sendUpdatePlayers = () => {
     const players = [...socketPlayerMap.values()];
     sendToAll({type: 'players', players});
-    if (players.length >= 1) {
+    if (players.length >= 10) {
       [...pushSubscriptions.values()].forEach(pushSubscription => {
         webpush.sendNotification(pushSubscription, `${players.length} people want to play CTF now!`);
       });
@@ -47,7 +47,7 @@ socketServer.on('connection', (socket) => {
     if (packet.type === 'join') {
       // Rudimentary name sanitization. Lord knows some troll will come and ruin
       // the party no matter what.
-      const name = packet.name.slice(0, 20).replace(/[^a-zA-Z0-9-]+/, '');
+      const name = packet.name.slice(0, 20).replace(/[^a-zA-Z0-9- ]+/, '');
       if (name === '') {
         return socket.disconnect(true);
       }
