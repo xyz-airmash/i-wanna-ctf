@@ -1,48 +1,54 @@
-export const startPushSubscription = (vapidKey: string): Promise<any> => {
+export const getNotificationPermission = () => {
   return Notification.requestPermission().then(async result => {
-    await unsubscribe();
-    if (!navigator.serviceWorker) {
-      return;
+    if (result === 'granted') {
+      return result;
     }
-    await navigator.serviceWorker.register('/PushServiceWorker.js');
-    const registration = await navigator.serviceWorker.ready;
-    if (!registration.active) {
-      return;
-    }
-    const pushSubscription = await registration.pushManager.subscribe({
-      userVisibleOnly: true,
-      applicationServerKey: urlBase64ToUint8Array(vapidKey)
-    });
-    return pushSubscription;
+    throw new Error();
   });
+};
+
+export const startPushSubscription = async (vapidKey: string): Promise<any> => {
+  await getNotificationPermission();
+  await unsubscribe();
+  if (!navigator.serviceWorker) {
+    return;
+  }
+  await navigator.serviceWorker.register('/PushServiceWorker.js');
+  const registration = await navigator.serviceWorker.ready;
+  if (!registration.active) {
+    return;
+  }
+  const pushSubscription = await registration.pushManager.subscribe({
+    userVisibleOnly: true,
+    applicationServerKey: urlBase64ToUint8Array(vapidKey)
+  });
+  return pushSubscription;
 }
 
-export const getSubscription = () => {
-  return Notification.requestPermission().then(async result => {
-    if (!navigator.serviceWorker) {
-      return;
-    }
-    let registration = await navigator.serviceWorker.getRegistration()
-    if (registration) {
-      return registration.pushManager.getSubscription();
-    }
-  });
+export const getSubscription = async () => {
+  await getNotificationPermission();
+  if (!navigator.serviceWorker) {
+    return;
+  }
+  let registration = await navigator.serviceWorker.getRegistration()
+  if (registration) {
+    return registration.pushManager.getSubscription();
+  }
 }
 
-export const unsubscribe = () => {
-  return Notification.requestPermission().then(async result => {
-    if (!navigator.serviceWorker) {
-      return;
+export const unsubscribe = async () => {
+  await getNotificationPermission();
+  if (!navigator.serviceWorker) {
+    return;
+  }
+  let registration = await navigator.serviceWorker.getRegistration()
+  if (registration) {
+    let subscription = await registration.pushManager.getSubscription();
+    if (subscription) {
+      subscription.unsubscribe();
     }
-    let registration = await navigator.serviceWorker.getRegistration()
-    if (registration) {
-      let subscription = await registration.pushManager.getSubscription();
-      if (subscription) {
-       subscription.unsubscribe();
-      }
-      registration.unregister();
-    }
-  });
+    registration.unregister();
+  }
 }
 
 function urlBase64ToUint8Array(base64String: string) {

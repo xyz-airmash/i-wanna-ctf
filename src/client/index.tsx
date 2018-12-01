@@ -22,23 +22,29 @@ class Lobby extends Component {
     };
   }
 
-  componentDidMount() {
+  async componentDidMount() {
     this.network.setup();
     this.network.onPlayersChanged(players => {
       this.setState({ players });
     });
 
-    getSubscription().then(subscription => {
-      if (subscription) {
-        this.setState({ isWaiting: true });
-      }
+    this.network.onStatusUpdate(status => {
+      this.setState({
+        isWaiting: status.active,
+        players: status.players
+      });
     });
+    this.network.requestStatusUpdate();
   }
 
   render() {
     const { name, players, isWaiting } = this.state;
+    const hasNotificationPermission = Notification.permission === 'granted';
     return <div className="lobby-wrapper">
       <h1>Airmash CTF Lobby</h1>
+      {!hasNotificationPermission &&
+        <div className="warning">Turn on notifications or the site will not work properly!</div>
+      }
       {isWaiting ?
         <div className="wrapper">
           <p>When 10 people show up, you will get a push notification.</p>
@@ -55,7 +61,7 @@ class Lobby extends Component {
               value={name}
               autofocus
               onKeyUp={evt => evt.key === 'Enter' && this.join(name)}
-              onChange={(evt: any) => this.setState({ name: evt.target.value })} />
+              onInput={(evt: any) => this.setState({ name: evt.target.value })} />
             <input type="submit" value="Join CTF Lobby" />
           </form>
         </div>
