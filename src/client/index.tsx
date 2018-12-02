@@ -39,42 +39,48 @@ class Lobby extends Component {
 
   render() {
     const { name, players, isWaiting } = this.state;
+    const isEmbedded = new URLSearchParams(window.location.search).get('embed') !== null;
     const hasNotificationPermission = Notification.permission === 'granted';
-    return <div className="lobby-wrapper">
-      <h1>Airmash CTF Lobby</h1>
-      {!hasNotificationPermission &&
-        <div className="warning">Turn on notifications or the site will not work properly!</div>
-      }
-      {isWaiting ?
-        <div className="wrapper">
-          <p>When 10 people show up, you will get a push notification.</p>
-          <input type="button" value="Leave CTF Lobby" onClick={() => this.leave()} />
-        </div>
-      :
-        <div className="wrapper">
-          <form onSubmit={evt => (this.join(name), evt.preventDefault())}>
-            <input
-              maxLength={20}
-              type="text"
-              placeholder="My name"
-              spellcheck={false}
-              value={name}
-              autofocus
-              onKeyUp={evt => evt.key === 'Enter' && this.join(name)}
-              onInput={(evt: any) => this.setState({ name: evt.target.value })} />
-            <input type="submit" value="Join CTF Lobby" />
-          </form>
-        </div>
-      }
-      {players.length ? <div>
-          <hr />
-          <p>Players who are waiting:</p>
-          <ul>
-            {players.map(player => <li>{player}</li>)}
-          </ul>
-        </div>
-       : false
-      }
+    return <div className={isEmbedded ? "background" : "background background-on"}>
+      <div className="lobby-wrapper">
+        <h1>{isEmbedded ?
+          <a href="https://lobby.starma.sh">CTF Lobby</a>
+        : "CTF Lobby"
+        }</h1>
+        {!hasNotificationPermission &&
+          <div className="warning">Turn on notifications or the site will not work properly!</div>
+        }
+        {isWaiting ?
+          <div className="form">
+            <p>When 10 people show up, you will get a push notification. You can now close this tab.</p>
+            <input type="button" value="Leave CTF Lobby" onClick={() => this.leave()} />
+          </div>
+        :
+          <div className="form">
+            <form onSubmit={evt => (this.join(name), evt.preventDefault())}>
+              <input
+                maxLength={20}
+                type="text"
+                placeholder="My name"
+                spellcheck={false}
+                value={name}
+                autofocus
+                onKeyUp={evt => evt.key === 'Enter' && this.join(name)}
+                onInput={(evt: any) => this.setState({ name: evt.target.value })} />
+              <input type="submit" value="Join CTF Lobby" />
+            </form>
+          </div>
+        }
+        {players.length ? <div className="waiting-list">
+            <hr />
+            <p>Players who are waiting:</p>
+            <ul>
+              {players.map(player => <li>{player}</li>)}
+            </ul>
+          </div>
+        : false
+        }
+      </div>
     </div>;
   }
 

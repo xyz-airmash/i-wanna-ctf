@@ -23,18 +23,14 @@
   box-sizing: border-box;
 }
 
-html, body {
+html, body, #mount {
   margin: 0;
   padding: 0;
   font-family: MontserratWeb, Arial;
   height: 100%;
 }
 
-body {
-  background: url('./assets/sea.jpg');
-}
-
-#mount {
+.background {
   height: 100%;
   display: flex;
   justify-content: center;
@@ -42,23 +38,37 @@ body {
   margin: 0;
 }
 
+.background-on {
+  background: url('./assets/sea.jpg');
+}
+
 h1 {
   margin-top: 0;
-  font-size: 24px;
+  font-size: 16px;
+  padding: 5px;
+  background: #101010;
+
+  a, a:visited {
+    color: white;
+    text-decoration: none;
+  }
 }
 
 .lobby-wrapper {
   display: inline-block;
-  margin: 20px;
   background: rgba(0, 0, 0, 0.75);
   border-radius: 9px;
   box-shadow: 0 10px 59px -9px rgba(0,0,0,0.7);
   border-radius: 9px;
   border-bottom: 2px solid rgba(0,0,0,0.3);
   border-top: 2px solid rgba(255,255,255,0.08);
-  padding: 20px;
   color: white;
-  width: 400px;
+  width: 300px;
+  overflow: hidden;
+}
+
+.form, .waiting-list {
+  margin: 10px;
 }
 
 input[type=text] {
@@ -95,6 +105,8 @@ input[type=submit], input[type=button] {
   font-family: MontserratWeb, Arial;
   width: 100%;
   text-shadow: 0 -1px 0 rgba(0,0,0,0.6);
+  -webkit-appearance: none;
+  -webkit-border-radius: 0;
 
   &:focus { outline: none }
   &:hover {
@@ -112,6 +124,7 @@ ul {
   list-style-type: none;
   padding: 0;
   font-weight: 400;
+  font-size: 11px;
   margin: 0;
 
   li {
@@ -128,7 +141,9 @@ hr {
 
 p {
   line-height: 1.4;
-  font-size: 14px;
+  font-size: 11px;
+  color: rgb(146, 146, 146);
+  margin: 5px 0;
 }
 
 .warning {
