@@ -13,8 +13,11 @@ export const startPushSubscription = async (vapidKey: string): Promise<any> => {
   if (!navigator.serviceWorker) {
     return;
   }
-  await navigator.serviceWorker.register('/PushServiceWorker.js');
-  const registration = await navigator.serviceWorker.ready;
+  let registration = await navigator.serviceWorker.getRegistration();
+  if (!registration) {
+    await navigator.serviceWorker.register('/PushServiceWorker.js');
+    registration = await navigator.serviceWorker.ready;
+  }
   if (!registration.active) {
     return;
   }
@@ -47,7 +50,7 @@ export const unsubscribe = async () => {
     if (subscription) {
       subscription.unsubscribe();
     }
-    registration.unregister();
+    //registration.unregister();
   }
 }
 
