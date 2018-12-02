@@ -52,7 +52,10 @@ class Lobby extends Component {
         }
         {isWaiting ?
           <div className="form">
-            <p>When 10 people show up, you will get a push notification. You can now close this tab.</p>
+            {isEmbedded ?
+              <p>When 10 people show up, you will get a push notification.</p>
+            : <p>When 10 people show up, you will get a push notification. You can now close this tab.</p>
+            }
             <input type="button" value="Leave CTF Lobby" onClick={() => this.leave()} />
           </div>
         :
