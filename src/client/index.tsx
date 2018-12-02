@@ -41,6 +41,17 @@ class Lobby extends Component {
     const { name, players, isWaiting } = this.state;
     const isEmbedded = new URLSearchParams(window.location.search).get('embed') !== null;
     const hasNotificationPermission = Notification.permission === 'granted';
+    if (isEmbedded && !hasNotificationPermission) {
+      return <div className="background">
+        <div className="lobby-wrapper">
+          <h1><a href="https://lobby.starma.sh">CTF Lobby</a></h1>
+          <div className="notification-message">
+            <p>Go to <a href="https://lobby.starma.sh">lobby.starma.sh</a> and allow notifications to enable the CTF lobby.</p>
+          </div>
+        </div>
+      </div>;
+    }
+
     return <div className={isEmbedded ? "background" : "background background-on"}>
       <div className="lobby-wrapper">
         <h1>{isEmbedded ?

@@ -67,7 +67,7 @@ h1 {
   overflow: hidden;
 }
 
-.form, .waiting-list {
+.form, .waiting-list, .notification-message {
   margin: 10px;
 }
 
@@ -150,4 +150,9 @@ p {
   background: #cc1f84;
   padding: 5px;
   border-radius: 5px;
+}
+
+a, a:visited {
+  color: rgb(79, 128, 219);
+  text-decoration: none;
 }
