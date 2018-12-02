@@ -23,6 +23,10 @@
   box-sizing: border-box;
 }
 
+html {
+  font-size: 10px;
+}
+
 html, body, #mount {
   margin: 0;
   padding: 0;
@@ -38,14 +42,14 @@ html, body, #mount {
   margin: 0;
 }
 
-.background-on {
+.not-embedded .background {
   background: url('./assets/sea.jpg');
 }
 
 h1 {
   margin-top: 0;
-  font-size: 16px;
-  padding: 5px;
+  font-size: 1.6rem;
+  padding: .5rem;
   background: #101010;
 
   a, a:visited {
@@ -57,33 +61,33 @@ h1 {
 .lobby-wrapper {
   display: inline-block;
   background: rgba(0, 0, 0, 0.75);
-  border-radius: 9px;
-  box-shadow: 0 10px 59px -9px rgba(0,0,0,0.7);
-  border-radius: 9px;
-  border-bottom: 2px solid rgba(0,0,0,0.3);
-  border-top: 2px solid rgba(255,255,255,0.08);
+  border-radius: .9rem;
+  box-shadow: 0 1rem 5.9rem -.9rem rgba(0,0,0,0.7);
+  border-radius: .9rem;
+  border-bottom: .2rem solid rgba(0,0,0,0.3);
+  border-top: .2rem solid rgba(255,255,255,0.08);
   color: white;
   width: 300px;
   overflow: hidden;
 }
 
 .form, .waiting-list, .notification-message {
-  margin: 10px;
+  margin: 1rem;
 }
 
 input[type=text] {
   display: block;
-  height: 40px;
+  height: 4rem;
   border: 0;
-  border-bottom: 2px solid #141414;
-  box-shadow: 0 0 16px 0 rgba(0,0,0,0.6);
+  border-bottom: .2rem solid #141414;
+  box-shadow: 0 0 1.6rem 0 rgba(0,0,0,0.6);
   background-color: rgba(0, 0, 0, 0.5);
-  padding-left: 14px;
+  padding-left: 1.4rem;
   font-family: MontserratWeb, Arial;
-  font-size: 18px;
+  font-size: 1.8rem;
   color: #d2d2d2;;
-  border-radius: 5px;
-  margin: 10px 0;
+  border-radius: .5rem;
+  margin: 1rem 0;
   width: 100%;
 
   &:focus { outline: none }
@@ -92,31 +96,30 @@ input[type=text] {
 input[type=submit], input[type=button] {
   display: inline-block;
   background-color: #228a12;
-  box-shadow: 0 0 10px 0 #000;
+  box-shadow: 0 0 1rem 0 #000;
   text-transform: uppercase;
   border: 0;
   color: white;
-  font-size: 16px;
-  text-shadow: 0 -1px 0 rgba(0,0,0,0.6);
-  border-bottom: 2px solid rgba(0,0,0,0.2);
-  padding: 9px 18px 7px 18px;
-  border-radius: 4px;
+  font-size: 1.6rem;
+  text-shadow: 0 -.1rem 0 rgba(0,0,0,0.6);
+  border-bottom: .2rem solid rgba(0,0,0,0.2);
+  padding: .9rem .18rem .7rem 1.8rem;
+  border-radius: .4rem;
   font-weight: bold;
   font-family: MontserratWeb, Arial;
   width: 100%;
-  text-shadow: 0 -1px 0 rgba(0,0,0,0.6);
+  text-shadow: 0 -.1rem 0 rgba(0,0,0,0.6);
   -webkit-appearance: none;
-  -webkit-border-radius: 0;
 
   &:focus { outline: none }
   &:hover {
     background-color: #399c29;
-    box-shadow: 0 0 10px 0 #000;
+    box-shadow: 0 0 1rem 0 #000;
     cursor: pointer;
   }
   &:active {
     border-bottom: none;
-    border-top: 2px solid rgba(0,0,0,0.3);
+    border-top: .2rem solid rgba(0,0,0,0.3);
   }
 }
 
@@ -124,7 +127,7 @@ ul {
   list-style-type: none;
   padding: 0;
   font-weight: 400;
-  font-size: 11px;
+  font-size: 1.1rem;
   margin: 0;
 
   li {
@@ -135,24 +138,35 @@ ul {
 
 hr {
   border: 0;
-  border-top: 1px solid rgba(255, 255, 255, 0.2);
-  margin: 10px 0;
+  border-top: .1rem solid rgba(255, 255, 255, 0.2);
+  margin: 1rem 0;
 }
 
 p {
   line-height: 1.4;
-  font-size: 11px;
+  font-size: 1.1rem;
   color: rgb(146, 146, 146);
   margin: 5px 0;
 }
 
 .warning {
   background: #cc1f84;
-  padding: 5px;
-  border-radius: 5px;
+  padding: .5rem;
+  margin: 1rem;
+  border-radius: .5rem;
 }
 
 a, a:visited {
   color: rgb(79, 128, 219);
   text-decoration: none;
+}
+
+@media (max-width: 1024px) {
+  html.not-embedded {
+    font-size: 40px;
+
+    .lobby-wrapper {
+      width: 90%;
+    }
+  }
 }

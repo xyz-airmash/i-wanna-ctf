@@ -1,5 +1,11 @@
+const w: any = window; // Silence TypeScript, lol.
+const Notification = w.Notification ? w.Notification : undefined;
+
 export const getNotificationPermission = () => {
-  return Notification.requestPermission().then(async result => {
+  if (!Notification) {
+    return Promise.reject();
+  }
+  return Notification.requestPermission().then(async (result: any) => {
     if (result === 'granted') {
       return result;
     }
@@ -53,6 +59,10 @@ export const unsubscribe = async () => {
     //registration.unregister();
   }
 }
+
+export const hasNotificationPermission = () => {
+  return Notification ? Notification.permission === 'granted' : false;
+};
 
 function urlBase64ToUint8Array(base64String: string) {
   const padding = '='.repeat((4 - base64String.length % 4) % 4);

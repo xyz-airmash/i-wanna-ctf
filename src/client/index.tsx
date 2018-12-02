@@ -1,7 +1,7 @@
 import "./styles.scss";
 import { h, render, Component } from "preact";
 import { Network } from "./Network";
-import { getSubscription, unsubscribe, startPushSubscription } from "./Notifications";
+import { unsubscribe, startPushSubscription, hasNotificationPermission } from "./Notifications";
 
 interface State {
   name: string,
@@ -37,11 +37,19 @@ class Lobby extends Component {
     this.network.requestStatusUpdate();
   }
 
+  componentDidUpdate() {
+    const html = document.body.parentElement;
+    if (this.isEmbedded()) {
+      html.classList.add('embedded');
+    } else {
+      html.classList.add('not-embedded');
+    }
+  }
+
   render() {
     const { name, players, isWaiting } = this.state;
-    const isEmbedded = new URLSearchParams(window.location.search).get('embed') !== null;
-    const hasNotificationPermission = Notification.permission === 'granted';
-    if (isEmbedded && !hasNotificationPermission) {
+    const isEmbedded = this.isEmbedded();
+    if (isEmbedded && !hasNotificationPermission()) {
       return <div className="background">
         <div className="lobby-wrapper">
           <h1><a href="https://lobby.starma.sh">CTF Lobby</a></h1>
@@ -52,13 +60,13 @@ class Lobby extends Component {
       </div>;
     }
 
-    return <div className={isEmbedded ? "background" : "background background-on"}>
+    return <div className="background">
       <div className="lobby-wrapper">
         <h1>{isEmbedded ?
           <a href="https://lobby.starma.sh">CTF Lobby</a>
         : "CTF Lobby"
         }</h1>
-        {!hasNotificationPermission &&
+        {!hasNotificationPermission() &&
           <div className="warning">Turn on notifications or the site will not work properly!</div>
         }
         {isWaiting ?
@@ -75,7 +83,7 @@ class Lobby extends Component {
               <input
                 maxLength={20}
                 type="text"
-                placeholder="My name"
+                placeholder="Name"
                 spellcheck={false}
                 value={name}
                 autofocus
@@ -114,6 +122,10 @@ class Lobby extends Component {
     this.setState({ isWaiting: false });
     unsubscribe();
     this.network.endPushSubscription();
+  }
+
+  isEmbedded() {
+    return new URLSearchParams(window.location.search).get('embed') !== null;
   }
 }
 
