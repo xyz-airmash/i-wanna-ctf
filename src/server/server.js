@@ -32,7 +32,7 @@ socketServer.on('connection', async (socket) => {
     return socket.disconnect(true);
   }
 
-  const ip = socket.request.connection.remoteAddress;
+  const ip = socket.handshake.headers['x-forwarded-for'];
 
   const sendUpdatePlayers = async () => {
     const players = await getValues('names');
@@ -85,7 +85,7 @@ socketServer.on('connection', async (socket) => {
 
   setInterval(async () => {
     sendUpdateStatus();
-  }, TTL / 2);
+  }, 1000 * TTL / 2);
 
   socket.on('disconnect', () => {
     sendUpdatePlayers();
